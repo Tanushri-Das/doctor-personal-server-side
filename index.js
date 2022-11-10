@@ -61,17 +61,14 @@ async function run(){
             const result = await reviewCollection.insertOne(review);
             res.send(result);
         })
-        //  app.get('/services/:id',async(req,res)=>{
-        //     const id = req.params.id;
-        //     const query = {_id:ObjectId(id)};
-        //     const service = await serviceCollection.findOne(query);
-        //     res.send(service)
-        // })
+        
 
         app.get('/reviews/:id',async(req,res)=>{
             const id = req.params.id;
             const query = {service:id};
-            const cursor = reviewCollection.find(query).sort({_id:-1})
+            
+            const cursor = reviewCollection.find(query, { sort: { time: -1 } })
+
             const result = await cursor.toArray();
             res.send(result);
         })
