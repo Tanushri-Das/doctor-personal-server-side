@@ -18,6 +18,7 @@ async function run(){
     try{
         const serviceCollection = client.db('doctor').collection('services');
         const reviewCollection = client.db('doctor').collection('reviews');
+        const contactCollection = client.db('doctor').collection('contacts');
 
         app.get('/service',async(req,res)=>{
             const query={};
@@ -84,6 +85,19 @@ async function run(){
             const result = await serviceCollection.insertOne(services);
             res.send(result);
         })
+        app.post('/contacts', async (req, res) => {
+            const contact = req.body;
+            console.log(contact)
+            try {
+              await contactCollection.insertOne(contact);
+              res.json({ acknowledged: true });
+            } catch (error) {
+              console.error(error);
+              res.status(500).json({ acknowledged: false });
+            }
+          });
+          
+          
     }
     finally{
 
@@ -92,7 +106,7 @@ async function run(){
 run().catch(error=> console.error(error))
 
 app.get('/',(req,res)=>{
-    res.send('Doctor personal website')
+    res.send('Doctor personal Server Website')
 })
 app.listen(port ,()=>{
     console.log(`Server is running on port : ${port}`)
